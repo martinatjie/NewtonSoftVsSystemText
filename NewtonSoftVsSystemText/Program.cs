@@ -1,5 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Newtonsoft.Json;
 using NewtonSoftVsSystemText;
+using System.Text.Json;
 
 Console.WriteLine("Hello, World!");
 
@@ -162,5 +164,28 @@ var serializedPartyWithEntertainmentAndSystemText = SystemTextinator.Serialize(p
 var deserializedPartyWithEntertainmentAndNewtonsoft = NewtonSoftinator.Deserialize<PartyWithEntertainment>(serializedPartyWithEntertainmentAndNewtonsoft);
 var deserializedPartyWithEntertainmentAndSystemText = SystemTextinator.Deserialize<PartyWithEntertainment>(serializedPartyWithEntertainmentAndSystemText);
 
-Console.WriteLine($"Newtonsoft party entertainer: {deserializedPartyWithEntertainmentAndNewtonsoft.Entertainer.Name}");
-Console.WriteLine($"SystemText party entertainer: {deserializedPartyWithEntertainmentAndNewtonsoft.Entertainer.Name}");
+//these will throw null ref exceptions:
+//Console.WriteLine($"Newtonsoft party entertainer: {deserializedPartyWithEntertainmentAndNewtonsoft.Entertainer.Name}");
+//Console.WriteLine($"SystemText party entertainer: {deserializedPartyWithEntertainmentAndNewtonsoft.Entertainer.Name}");
+
+//now let's try serializer settings:
+var settingsNewtonsoft = new JsonSerializerSettings()
+{
+    TypeNameHandling = TypeNameHandling.All
+};
+
+//add the settings to both serialize and deserialize:
+
+var serializedPartyWithEntertainmentAndNewtonsoftAndSettings = NewtonSoftinator.Serialize(partyWithEntertainment, settingsNewtonsoft);
+
+var deserializedPartyWithEntertainmentAndNewtonsoftWithSettings = NewtonSoftinator.Deserialize<PartyWithEntertainment>(serializedPartyWithEntertainmentAndNewtonsoftAndSettings, settingsNewtonsoft);
+
+//var settingsSystemText = new JsonSerializerOptions()
+//{
+//    //equivalent is not available. Not supported reason: see https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/migrate-from-newtonsoft?pivots=dotnet-9-0#typenamehandlingall-not-supported
+//};
+
+//similar functionality not supported:
+//var deserializedPartyWithEntertainmentAndSystemTextWithSettings = SystemTextinator.Deserialize<PartyWithEntertainment>(serializedPartyWithEntertainmentAndSystemText, settingsSystemText);
+
+Console.WriteLine($"Newtonsoft party entertainer: {deserializedPartyWithEntertainmentAndNewtonsoftWithSettings.Entertainer.Name}");
