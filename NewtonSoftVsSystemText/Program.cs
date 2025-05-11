@@ -151,3 +151,16 @@ Console.WriteLine("____________");
 //}
 
 Console.WriteLine("============================================");
+
+var partyWithEntertainment = new PartyWithEntertainment();
+partyWithEntertainment.Entertainer = new Entertainer();
+
+var serializedPartyWithEntertainmentAndNewtonsoft = NewtonSoftinator.Serialize(partyWithEntertainment);
+var serializedPartyWithEntertainmentAndSystemText = SystemTextinator.Serialize(partyWithEntertainment);
+
+//these also don't deserialize, despite the property being in the interface:
+var deserializedPartyWithEntertainmentAndNewtonsoft = NewtonSoftinator.Deserialize<PartyWithEntertainment>(serializedPartyWithEntertainmentAndNewtonsoft);
+var deserializedPartyWithEntertainmentAndSystemText = SystemTextinator.Deserialize<PartyWithEntertainment>(serializedPartyWithEntertainmentAndSystemText);
+
+Console.WriteLine($"Newtonsoft party entertainer: {deserializedPartyWithEntertainmentAndNewtonsoft.Entertainer.Name}");
+Console.WriteLine($"SystemText party entertainer: {deserializedPartyWithEntertainmentAndNewtonsoft.Entertainer.Name}");

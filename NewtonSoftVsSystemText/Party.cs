@@ -34,4 +34,9 @@ namespace NewtonSoftVsSystemText
         public DateTime PartyDateTime { get; set; }
         public NestedCake ConcreteCake { get; set; }
     }
+
+    public class PartyWithEntertainment
+    {
+        public IEntertainerWithProperties Entertainer { get; set; }
+    }
 }
